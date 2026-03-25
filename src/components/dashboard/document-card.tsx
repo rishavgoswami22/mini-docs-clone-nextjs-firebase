@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
+import { parseTimestamp } from "@/lib/utils/timestamp";
 import { FileText, MoreVertical, Trash2, Edit2, Pencil } from "lucide-react";
 import { DocumentData } from "@/types";
 import { DocumentService } from "@/lib/services/document.service";
@@ -115,7 +116,7 @@ export function DocumentCard({ document, onDelete }: DocumentCardProps) {
           </div>
 
           <p className="text-xs text-muted-foreground mt-2 line-clamp-1">
-            {formatDistanceToNow(document.updatedAt, { addSuffix: true })}
+            {formatDistanceToNow(parseTimestamp(document.updatedAt), { addSuffix: true })}
           </p>
         </div>
       </div>

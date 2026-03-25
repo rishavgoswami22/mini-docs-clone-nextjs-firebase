@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../db/firebase";
 import { normalize, stripUndefined } from "@/lib/utils/plate-normalize";
+import { now, parseTimestamp } from "@/lib/utils/timestamp";
 import { DocumentData, DocumentRole, PlateContent } from "@/types";
 
 function uniqEmails(emails: string[]) {
@@ -37,8 +38,8 @@ export const DocumentService = {
       ownerEmail: userEmail,
       collaborators: [],
       sharedWith: [],
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: now(),
+      updatedAt: now(),
     };
     
     await setDoc(newDocRef, documentData);
@@ -70,7 +71,11 @@ export const DocumentService = {
           byId.set(row.id, row);
         });
       }
-      callback([...byId.values()].sort((a, b) => b.updatedAt - a.updatedAt));
+      callback(
+        [...byId.values()].sort(
+          (a, b) => parseTimestamp(b.updatedAt).getTime() - parseTimestamp(a.updatedAt).getTime()
+        )
+      );
     };
 
     const qOwned = query(collection(db, "documents"), where("ownerId", "==", userId));
@@ -111,7 +116,7 @@ export const DocumentService = {
 
   async updateDocument(docId: string, updates: Partial<DocumentData>) {
     const docRef = doc(db, "documents", docId);
-    const payload: Record<string, unknown> = { updatedAt: Date.now() };
+    const payload: Record<string, unknown> = { updatedAt: now() };
 
     if (updates.title !== undefined) {
       payload.title = updates.title === "" ? "Untitled" : updates.title;
@@ -179,7 +184,7 @@ export const DocumentService = {
     await updateDoc(docRef, {
       collaborators: list,
       sharedWith,
-      updatedAt: Date.now(),
+      updatedAt: now(),
     });
 
     return list;

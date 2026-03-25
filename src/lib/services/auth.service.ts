@@ -9,6 +9,7 @@ import {
 import { auth, db } from "../db/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { friendlyError } from "@/lib/utils/error-messages";
+import { now } from "@/lib/utils/timestamp";
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: "select_account" });
@@ -20,7 +21,7 @@ async function upsertUserProfile(profile: {
   photoURL: string | null;
 }) {
   try {
-    await setDoc(doc(db, "users", profile.uid), { ...profile, updatedAt: Date.now() }, { merge: true });
+    await setDoc(doc(db, "users", profile.uid), { ...profile, updatedAt: now() }, { merge: true });
   } catch {
     // profile sync is optional — auth still works without it
   }

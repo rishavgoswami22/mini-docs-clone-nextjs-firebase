@@ -25,8 +25,8 @@ export interface DocumentData {
   collaborators: Collaborator[];
   /** Lowercase emails, kept in sync with `collaborators` for Firestore queries. */
   sharedWith?: string[];
-  createdAt: number;
-  updatedAt: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type SaveStatus = "idle" | "saving" | "saved" | "error";

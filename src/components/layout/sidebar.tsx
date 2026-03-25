@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { parseTimestamp } from "@/lib/utils/timestamp";
 import { AuthService } from "@/lib/services/auth.service";
 import { useWorkspaceDocs } from "@/context/workspace-docs-context";
 import { FileText, LogOut, Moon, PanelLeftClose, Plus, Sun } from "lucide-react";
@@ -50,7 +51,7 @@ function DocLinks(props: { onPick?: () => void }) {
             >
               <span className="line-clamp-2 break-words">{d.title || "Untitled"}</span>
               <span className="mt-0.5 block text-[11px] font-normal text-muted-foreground">
-                {formatDistanceToNow(d.updatedAt, { addSuffix: true })}
+                {formatDistanceToNow(parseTimestamp(d.updatedAt), { addSuffix: true })}
               </span>
             </Link>
           </li>

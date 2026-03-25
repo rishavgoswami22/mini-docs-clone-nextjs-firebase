@@ -1,75 +1,62 @@
 # Mini Google Docs Clone
 
-A simplified collaborative document editor built with Next.js (App Router), TypeScript, Firebase, and Plate.js.
+A collaborative document editor built with Next.js, TypeScript, Firebase, and Plate.js.
 
-## Setup
+Live demo: _[add your Vercel URL here]_
 
-1. Clone the repo
-2. Copy `.env.example` to `.env.local` and fill in your Firebase web app keys
-3. In the [Firebase console](https://console.firebase.google.com):
-   - Enable **Authentication** (Email/Password + Google)
-   - Create a **Firestore** database (Standard edition)
-   - Paste the contents of `firestore.rules` into Firestore > Rules
-4. Install and run:
-   ```bash
-   pnpm install
-   pnpm dev
-   ```
+## Quick start
 
-## Deploying to Vercel
+```bash
+pnpm install
+cp .env.example .env.local   # fill in your Firebase keys
+pnpm dev
+```
 
-- Add all `NEXT_PUBLIC_*` env vars plus `RESEND_API_KEY` in Vercel project settings
-- Add your Vercel domain to Firebase Auth > Authorized domains
+Full setup instructions (Firebase, auth, Firestore, env vars): **[SETUP.md](./SETUP.md)**
 
-## Tech Stack
+## What it does
 
-| Tech | Why |
-|------|-----|
-| **Next.js (App Router)** | File-based routing, layouts, API routes in one framework |
-| **TypeScript** | Type safety across the whole codebase |
-| **Firebase Auth + Firestore** | Auth with zero backend, Firestore listeners for realtime |
-| **Plate.js** | Rich text editor built on Slate — used with a custom minimal toolbar |
-| **Resend** | Email invites when sharing docs (optional, works without it) |
-| **next-themes** | Dark/light mode toggle |
-| **ShadCN / Radix UI** | Accessible UI primitives |
+- Sign up / login (email + Google OAuth)
+- Create, rename, delete documents
+- Rich text editing — bold, italic, underline, headings, lists
+- Auto-save with 2s debounce, flushes on blur
+- Realtime sync across tabs/users via Firestore listeners
+- Share docs by email invite + copy link
+- Download as PDF
+- Dark/light theme
+- Mobile responsive
 
-## What's implemented
+## Tech stack
 
-- **Auth**: Email/password signup + login, Google OAuth, persistent sessions
-- **Documents**: Create, rename, delete, list (sidebar + dashboard grid)
-- **Rich text editor**: Bold, italic, underline, H1/H2, bullet lists, numbered lists
-- **Auto-save**: 2s debounce after typing stops, immediate flush on blur/tab switch
-- **Save status**: Shows Saving/Saved/Error in the editor header
-- **Realtime sync**: Firestore `onSnapshot` — edits from other tabs/users show up live
-- **Sharing**: Invite by email, copy link, collaborator access via Firestore rules
-- **Email invites**: Sends a link via Resend (falls back gracefully without API key)
-- **Download as PDF**: Print-friendly export from the editor
-- **Dark mode**: System-aware with manual toggle
-- **Mobile responsive**: Hamburger menu + slide-out sidebar on small screens
-- **Error handling**: Global error boundary, 404 page, Firestore permission errors handled
+| Tech | Role |
+|------|------|
+| Next.js (App Router) | Framework, routing, API routes |
+| TypeScript | Type safety |
+| Firebase Auth + Firestore | Auth, database, realtime |
+| Plate.js / Slate | Rich text editor |
+| Resend | Email invites (optional) |
+| Tailwind + ShadCN | Styling |
 
-## Project Structure
+## Project structure
 
 ```
-app/                    Pages & routes (Next.js)
-  api/                  Backend API routes
+app/                    Pages & API routes
 src/
-  types/                Interfaces & type definitions
+  types/                TypeScript interfaces
   lib/
-    db/                 Firebase configuration
+    db/                 Firebase config
     services/           Auth & document Firestore operations
-    utils/              Helpers (class merger, normalization, access checks)
-  hooks/                Custom React hooks (auto-save, realtime doc)
-  context/              Auth & workspace state providers
+    utils/              Helpers, error messages, access checks
+  hooks/                Auto-save, realtime document hooks
+  context/              Auth & workspace providers
   components/
-    ui/                 Primitive UI components (button, dialog, input, etc.)
-    layout/             App shell (sidebar, top bar, providers)
-    editor/             Plate.js rich text editor
-    dashboard/          Document card component
+    ui/                 Button, dialog, input, etc.
+    layout/             Sidebar, top bar, providers
+    editor/             Plate.js editor
+    dashboard/          Document card
 ```
 
-## Trade-offs
+## Docs
 
-- **Sync model**: Last write wins — no OT/CRDT. Fine for the "simple sync" requirement.
-- **Roles**: The data model supports viewer/editor but Firestore rules currently treat all collaborators as editors.
-- **Email delivery**: Resend free tier only sends to your own email without a verified domain. Sharing via Firestore still works regardless.
+- **[SETUP.md](./SETUP.md)** — How to set up and run the project
+- **[PROJECT.md](./PROJECT.md)** — How I built it, tech decisions, trade-offs, what I'd improve

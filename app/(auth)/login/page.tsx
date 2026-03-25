@@ -29,9 +29,9 @@ export default function LoginPage() {
     try {
       await AuthService.login(email, password);
       router.replace("/dashboard");
-      toast.success("Successfully logged in.");
+      toast.success("Logged in");
     } catch (error) {
-      toast.error((error as Error).message || "Failed to log in.");
+      toast.error((error as Error).message);
     } finally {
       setEmailLoading(false);
     }
@@ -42,9 +42,9 @@ export default function LoginPage() {
     try {
       await AuthService.loginWithGoogle();
       router.replace("/dashboard");
-      toast.success("Successfully logged in with Google.");
+      toast.success("Logged in");
     } catch (error) {
-      toast.error((error as Error).message || "Failed to log in with Google.");
+      toast.error((error as Error).message);
     } finally {
       setGoogleLoading(false);
     }

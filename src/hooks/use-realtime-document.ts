@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { DocumentService } from "@/lib/services/document.service";
 import { DocumentData } from "@/types";
 import { useRouter } from "next/navigation";
+import { friendlyError } from "@/lib/utils/error-messages";
 import { toast } from "sonner";
 
 export function useRealtimeDocument(docId: string) {
@@ -24,7 +25,7 @@ export function useRealtimeDocument(docId: string) {
         setLoading(false);
       },
       () => {
-        toast.error("No access or network issue");
+        toast.error(friendlyError(undefined, "Can't open this document. You may not have access."));
         router.replace("/dashboard");
         setLoading(false);
       }

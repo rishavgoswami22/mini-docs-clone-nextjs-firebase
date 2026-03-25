@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+import { friendlyError } from "@/lib/utils/error-messages";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { DocumentService } from "@/lib/services/document.service";
@@ -58,7 +59,7 @@ export function WorkspaceDocsProvider({ children }: { children: ReactNode }) {
       () => {
         if (gen.current !== myGen) return;
         setLoading(false);
-        toast.error("Could not load documents.");
+        toast.error("Could not load your documents. Check your connection.");
       }
     );
 
@@ -87,7 +88,7 @@ export function WorkspaceDocsProvider({ children }: { children: ReactNode }) {
       await DocumentService.deleteDocument(id);
       toast.success("Deleted");
     } catch {
-      toast.error("Delete failed");
+      toast.error("Could not delete that document. Try again.");
     }
   }, []);
 

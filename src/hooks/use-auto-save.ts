@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DocumentService } from "@/lib/services/document.service";
 import type { SaveStatus, DocumentData } from "@/types";
+import { friendlyError } from "@/lib/utils/error-messages";
 import { toast } from "sonner";
 
 const DEBOUNCE_MS = 2000;
@@ -47,7 +48,7 @@ export function useAutoSave() {
     } catch (err) {
       console.error("auto-save failed", err);
       setSaveStatus("error");
-      toast.error("Save failed — check Firestore");
+      toast.error(friendlyError(err, "Could not save your changes. Check your connection."));
     } finally {
       flushingRef.current = false;
       if (dirtyRef.current) void doFlush();

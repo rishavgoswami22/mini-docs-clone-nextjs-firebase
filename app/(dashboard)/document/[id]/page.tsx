@@ -23,6 +23,7 @@ import { useAuth } from "@/context/auth-context";
 import { DocumentService } from "@/lib/services/document.service";
 import { canEditDocument, isDocumentOwner } from "@/lib/utils/doc-access";
 import { normalize, fingerprint } from "@/lib/utils/plate-normalize";
+import { friendlyError } from "@/lib/utils/error-messages";
 import type { PlateContent } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -162,7 +163,7 @@ export default function DocumentEditorPage() {
       setInviteEmail("");
       setShareOpen(false);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Invite failed");
+      toast.error(friendlyError(err, "Could not share. Try again."));
     } finally {
       setInviteBusy(false);
     }
@@ -196,7 +197,7 @@ export default function DocumentEditorPage() {
       toast.success("Document deleted");
       router.replace("/dashboard");
     } catch {
-      toast.error("Delete failed");
+      toast.error("Could not delete. Try again.");
       setDeleteBusy(false);
     }
   };

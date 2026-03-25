@@ -30,9 +30,9 @@ export default function SignupPage() {
     try {
       await AuthService.signUp(email, password, name);
       router.replace("/dashboard");
-      toast.success("Account created successfully.");
+      toast.success("Account created");
     } catch (error) {
-      toast.error((error as Error).message || "Failed to create account.");
+      toast.error((error as Error).message);
     } finally {
       setEmailLoading(false);
     }
@@ -43,9 +43,9 @@ export default function SignupPage() {
     try {
       await AuthService.loginWithGoogle();
       router.replace("/dashboard");
-      toast.success("Successfully signed up with Google.");
+      toast.success("Signed in");
     } catch (error) {
-      toast.error((error as Error).message || "Failed to log in with Google.");
+      toast.error((error as Error).message);
     } finally {
       setGoogleLoading(false);
     }

@@ -52,7 +52,7 @@ export function DocumentCard({ document, onDelete }: DocumentCardProps) {
       toast.success("Renamed");
       setRenameOpen(false);
     } catch {
-      toast.error("Rename failed");
+      toast.error("Could not rename. Try again.");
     } finally {
       setRenaming(false);
     }

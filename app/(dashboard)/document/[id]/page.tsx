@@ -215,8 +215,6 @@ export default function DocumentEditorPage() {
       return;
     }
 
-    const isDark = window.document.documentElement.classList.contains("dark");
-
     printWin.document.write(`<!DOCTYPE html>
 <html>
 <head>
@@ -227,7 +225,7 @@ export default function DocumentEditorPage() {
     body {
       font-family: "Segoe UI", Inter, -apple-system, sans-serif;
       padding: 48px 56px;
-      color: ${isDark ? "#111" : "#111"};
+      color: #111;
       background: #fff;
       line-height: 1.7;
       max-width: 800px;
@@ -238,9 +236,12 @@ export default function DocumentEditorPage() {
     p { margin: 0 0 12px; }
     ul, ol { margin: 0 0 16px; padding-left: 24px; }
     li { margin-bottom: 4px; }
+    blockquote { border-left: 4px solid #d1d5db; padding-left: 16px; margin: 0 0 16px; color: #666; font-style: italic; }
     strong { font-weight: 700; }
     em { font-style: italic; }
     u { text-decoration: underline; }
+    s { text-decoration: line-through; }
+    code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 14px; font-family: monospace; }
     @media print {
       body { padding: 0; }
       @page { margin: 1in 0.75in; }
